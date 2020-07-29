@@ -1,8 +1,8 @@
 'use strict';
 
-const TASK_AMMOUNT = 3;
+const TASK_AMOUNT = 3;
 const content = document.querySelector(`.main`);
-const controls = content.querySelector(`.control`);
+const control = content.querySelector(`.control`);
 const boardContainer = content.querySelector(`.board`);
 const taskListContainer = boardContainer.querySelector(`.board__tasks`);
 
@@ -10,13 +10,13 @@ const renderHtmlElement = (container, element, position) => {
   container.insertAdjacentHTML(position, element);
 };
 
-const renderLoadButton = () => {
+const createLoadButtonTemplate = () => {
   return (`
     <button class="load-more" type="button">load more</button>
   `);
 };
 
-const renderTaskCard = () => {
+const createTaskCardTemplate = () => {
   return (`
     <article class="card card--black">
       <div class="card__form">
@@ -64,7 +64,7 @@ const renderTaskCard = () => {
   `);
 };
 
-const renderCreateTaskForm = () => {
+const createTaskFormTemplate = () => {
   return (`
     <article class="card card--edit card--black">
       <form class="card__form" method="get">
@@ -265,7 +265,7 @@ const renderCreateTaskForm = () => {
   `);
 };
 
-const renderCardsSorting = () => {
+const createCardsSortTemplate = () => {
   return (`
   <div class="board__filter-list">
     <a href="#" class="board__filter" data-sort-type="default">SORT BY DEFAULT</a>
@@ -275,7 +275,7 @@ const renderCardsSorting = () => {
   `);
 };
 
-const renderTasksFilter = () => {
+const createTaskFiltersTemplate = () => {
   return (`
   <section class="main__filter filter container">
     <input
@@ -339,7 +339,7 @@ const renderTasksFilter = () => {
   `);
 };
 
-const renderMenu = () => {
+const createMenuTemplate = () => {
   return (`
     <section class="control__btn-wrap">
       <input
@@ -369,18 +369,18 @@ const renderMenu = () => {
         >STATISTICS</label
       >
     </section>
- `)
+ `);
 };
 
-const renderTasks = (container, position) => {
-  for (let i = 0; i < TASK_AMMOUNT; i += 1) {
-    renderHtmlElement(container, renderTaskCard(), position);
+const addTasks = (container, position) => {
+  for (let i = 0; i < TASK_AMOUNT; i += 1) {
+    renderHtmlElement(container, createTaskCardTemplate(), position);
   }
 };
 
-renderHtmlElement(controls, renderMenu(), `beforeend`);
-renderHtmlElement(controls, renderTasksFilter(), `afterend`);
-renderHtmlElement(boardContainer, renderCardsSorting(), `afterbegin`);
-renderHtmlElement(boardContainer, renderLoadButton(), `beforeend`);
-renderHtmlElement(taskListContainer, renderCreateTaskForm(), `beforeend`);
-renderTasks(taskListContainer, `beforeend`);
+renderHtmlElement(control, createMenuTemplate(), `beforeend`);
+renderHtmlElement(control, createTaskFiltersTemplate(), `afterend`);
+renderHtmlElement(boardContainer, createCardsSortTemplate(), `afterbegin`);
+renderHtmlElement(boardContainer, createLoadButtonTemplate(), `beforeend`);
+renderHtmlElement(taskListContainer, createTaskFormTemplate(), `beforeend`);
+addTasks(taskListContainer, `beforeend`);
