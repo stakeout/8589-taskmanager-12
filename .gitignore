@@ -1,9 +1,13 @@
-* text eol=lf
-
-*.png binary
-*.jpg binary
-*.jpeg binary
-*.webp binary
-*.woff binary
-*.woff2 binary
-node_modules
+# system files
+.DS_Store
+Thumbs.db
+.idea
+*.sublime*
+.vscode
+*.log*
+# directories
+node_modules/
+build/
+# bundles
+public/bundle.js
+public/bundle.js.map
