@@ -50,7 +50,7 @@ const generateRepeating = () => {
 };
 
 
-const generateTask = () => {
+export const generateTask = () => {
   const dueDate = generateDate();
   const repeating = (dueDate === null)
     ? generateRepeating()
