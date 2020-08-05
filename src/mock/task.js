@@ -30,22 +30,38 @@ const generateDate = () => {
   return new Date(currentDate);
 };
 
+const generateRepeating = () => {
+  return {
+    mo: false,
+    tu: false,
+    we: Boolean(getRandomInteger(0, 1)),
+    th: false,
+    fr: Boolean(getRandomInteger(0, 1)),
+    sa: false,
+    su: false
+  };
+};
+
 
 const generateTask = () => {
   const dueDate = generateDate();
-  return {
-    description: generateDescription(),
-    dueDate,
-    isRepeat: false,
-    repeating: {
+  const repeating = (dueDate === null)
+    ? generateRepeating()
+    : {
       mo: false,
       tu: false,
       we: false,
       th: false,
       fr: false,
       sa: false,
-      su: false,
-    },
+      su: false
+    };
+
+  return {
+    description: generateDescription(),
+    dueDate,
+    isRepeat: false,
+    repeating,
     color: `black`,
     isArchive: false,
     isFavorite: false,
