@@ -22,6 +22,6 @@ const addTasks = (container, position) => {
 renderHtmlElement(control, menu(), `beforeend`);
 renderHtmlElement(control, filter(), `afterend`);
 renderHtmlElement(boardContainer, sort(), `afterbegin`);
-renderHtmlElement(boardContainer, loadMoreBtn(), `beforeend`);
 renderHtmlElement(taskListContainer, form(), `beforeend`);
 addTasks(taskListContainer, `beforeend`);
+renderHtmlElement(boardContainer, loadMoreBtn(), `beforeend`);
