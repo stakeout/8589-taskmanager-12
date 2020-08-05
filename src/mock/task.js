@@ -1,8 +1,5 @@
-const getRandomInteger = (a = 0, b = 1) => {
-  const min = Math.ceil(Math.min(a, b));
-  const max = Math.floor(Math.max(a, b));
-
-  return Math.floor(min + Math.random() * (min - max + 1));
+const getRandomInteger = (min = 0, max = 1) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 };
 
 const generateDescription = () => {
@@ -15,10 +12,30 @@ const generateDescription = () => {
   return descriptions[randomIndex];
 };
 
+const generateDate = () => {
+  const isDate = Boolean(getRandomInteger(0, 1));
+
+  if (!isDate) {
+    return null;
+  }
+
+  const maxDaysGap = 7;
+  const daysGap = getRandomInteger(-maxDaysGap, maxDaysGap);
+  const currentDate = new Date();
+
+  currentDate.setHours(23, 59, 59, 999);
+
+  currentDate.setDate(currentDate.getDate() + daysGap);
+
+  return new Date(currentDate);
+};
+
+
 const generateTask = () => {
+  const dueDate = generateDate();
   return {
     description: generateDescription(),
-    dueDate: null,
+    dueDate,
     isRepeat: false,
     repeating: {
       mo: false,
