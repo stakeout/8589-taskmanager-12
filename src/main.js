@@ -14,7 +14,6 @@ const boardContainer = content.querySelector(`.board`);
 const taskListContainer = boardContainer.querySelector(`.board__tasks`);
 
 const tasks = new Array(TASK_AMOUNT).fill().map(generateTask);
-console.log(tasks);
 
 const addTasks = (container, position) => {
   const length = tasks.length - 1;
