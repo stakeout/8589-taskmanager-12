@@ -1,6 +1,5 @@
-const getRandomInteger = (min = 0, max = 1) => {
-  return Math.floor(Math.random() * (max - min + 1)) + min;
-};
+import {COLORS} from "../consts.js";
+import {getRandomInteger, isTaskExpired, isTaskRepeating, humanizeTaskDueDate} from "../utils";
 
 const generateDescription = () => {
   const descriptions = [
@@ -13,10 +12,8 @@ const generateDescription = () => {
 };
 
 const generateRandomColor = () => {
-  const colors = [`black`, `yellow`, `blue`, `green`, `pink`];
-
-  const randomIndex = getRandomInteger(0, colors.length - 1);
-  return colors[randomIndex];
+  const randomIndex = getRandomInteger(0, COLORS.length - 1);
+  return COLORS[randomIndex];
 };
 
 const generateDate = () => {
@@ -74,23 +71,6 @@ export const generateTask = () => {
     isFavorite: getRandomInteger(),
   };
 };
-// returns boolean. If current date more than due date => the task is expired
-const isExpired = (dueDate) => {
-  if (dueDate === null) {
-    return false;
-  }
-
-  let currentDate = new Date();
-  currentDate.setHours(23, 59, 59, 999);
-  currentDate = new Date(currentDate);
-
-  return currentDate.getTime() > dueDate.getTime();
-};
-
-const isRepeating = (repeating) => {
-  return Object.values(repeating).some(Boolean);
-};
-
 
 export const createTaskTemplate = (task) => {
   const {
@@ -103,11 +83,11 @@ export const createTaskTemplate = (task) => {
   } = task;
 
   const date = dueDate !== null
-    ? dueDate.toLocaleString(`en-US`, {day: `numeric`, month: `long`})
+    ? humanizeTaskDueDate(dueDate)
     : ``;
-  const deadlineClassName = isExpired(dueDate) ? `card--deadline` : ``;
+  const deadlineClassName = isTaskExpired(dueDate) ? `card--deadline` : ``;
 
-  const repeatClassName = isRepeating(repeating)
+  const repeatClassName = isTaskRepeating(repeating)
     ? `card--repeat`
     : ``;
 
