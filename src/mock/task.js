@@ -1,5 +1,5 @@
 import {COLORS} from "../consts.js";
-import {getRandomInteger, isTaskExpired, isTaskRepeating, humanizeTaskDueDate} from "../utils";
+import {getRandomInteger, isTaskExpired, isTaskRepeating, humanizeTaskDueDate} from "../utils.js";
 
 const generateDescription = () => {
   const descriptions = [

@@ -24,6 +24,16 @@ export const isTaskExpired = (dueDate) => {
   return currentDate.getTime() > dueDate.getTime();
 };
 
+export const isTaskExpiringToday = (dueDate) => {
+  if (dueDate === null) {
+    return false;
+  }
+
+  const currentDate = getCurrentDate();
+
+  return currentDate.getTime() === dueDate.getTime();
+};
+
 export const isTaskRepeating = (repeating) => {
   return Object.values(repeating).some(Boolean);
 };
