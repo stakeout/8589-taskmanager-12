@@ -1,6 +1,6 @@
 import {renderHtmlElement} from './utils';
 import {createMenuTemplate as menu} from './view/site-menu';
-import {createTaskFiltersTemplate as filter} from './view/filter';
+import {createFilterTemplate as filter} from './view/filter';
 import {createCardsSortTemplate as sort} from './view/tasks-sort';
 // import {createTaskFormTemplate as form} from './view/task-edit';
 // import {createTaskCardTemplate as task} from './view/task';
