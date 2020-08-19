@@ -1,13 +1,19 @@
-# system files
+# Файлы и папки операционной системы
 .DS_Store
 Thumbs.db
+
+# Файлы редактора
 .idea
 *.sublime*
 .vscode
+
+# Вспомогательные файлы
 *.log*
-# directories
 node_modules/
+
+# Папка с собранными файлами проекта
 build/
+
 # bundles
-public/bundle.js
-public/bundle.js.map
+public/js/bundle.js
+public/js/bundle.js.map
