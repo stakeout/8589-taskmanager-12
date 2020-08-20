@@ -16,14 +16,22 @@ const TASK_COUNT_PER_STEP = 8;
 const siteMainElement = document.querySelector(`.main`);
 const control = siteMainElement.querySelector(`.control`);
 
+const renderTask = (taskListElement, task) => {
+  const taskComponent = new TaskView(task);
+  // eslint-disable-next-line no-unused-vars
+  const taskEditComponent = new TaskEditView(task);
+
+  render(taskListElement, taskComponent.getElement(), RenderPosition.BEFOREEND);
+};
+
 const boardComponent = new BoardView();
 
 const tasks = new Array(TASK_AMOUNT).fill().map(generateTask);
 const filters = generateFilter(tasks);
 
-const addTasks = (container, position) => {
-  for (let i = 1; i <= Math.min(tasks.length, TASK_COUNT_PER_STEP); i += 1) {
-    render(container, new TaskView(tasks[i]).getElement(), position);
+const addTasks = (container) => {
+  for (let i = 0; i <= Math.min(tasks.length, TASK_COUNT_PER_STEP); i += 1) {
+    renderTask(container, tasks[i]);
   }
 };
 
@@ -49,7 +57,7 @@ if (tasks.length > TASK_COUNT_PER_STEP) {
     evt.preventDefault();
     tasks
     .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
-    .forEach((task) => render(taskListComponent.getElement(), new TaskView(task).getElement(), RenderPosition.BEFOREEND));
+    .forEach((task) => renderTask(taskListComponent.getElement(), task));
 
     renderedTaskCount += TASK_COUNT_PER_STEP;
 
