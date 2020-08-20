@@ -31,13 +31,23 @@ const renderTask = (taskListElement, task) => {
     taskListElement.replaceChild(taskComponent.getElement(), taskEditComponent.getElement());
   };
 
+  const onEscKeyDown = (evt) => {
+    if (evt.key === `Escape` || evt.key === `Esc`) {
+      evt.preventDefault();
+      replaceFormToCard();
+      document.removeEventListener(`keydown`, onEscKeyDown);
+    }
+  };
+
   taskComponent.getElement().querySelector(`.card__btn--edit`).addEventListener(`click`, () => {
     replaceCardToForm();
+    document.addEventListener(`keydown`, onEscKeyDown);
   });
 
   taskEditComponent.getElement().querySelector(`form`).addEventListener(`submit`, (evt) => {
     evt.preventDefault();
     replaceFormToCard();
+    document.removeEventListener(`keydown`, onEscKeyDown);
   });
 
   render(taskListElement, taskComponent.getElement(), RenderPosition.BEFOREEND);
@@ -58,7 +68,6 @@ render(siteMainElement, new FilterView(filters).getElement(), RenderPosition.BEF
 render(siteMainElement, boardComponent.getElement(), RenderPosition.BEFOREEND);
 render(boardComponent.getElement(), new SortView().getElement(), RenderPosition.BEFOREEND);
 render(boardComponent.getElement(), taskListComponent.getElement(), RenderPosition.BEFOREEND);
-render(taskListComponent.getElement(), new TaskEditView(tasks[0]).getElement(), RenderPosition.BEFOREEND);
 addTasks(taskListComponent.getElement(), RenderPosition.BEFOREEND);
 
 
