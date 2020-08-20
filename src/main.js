@@ -1,9 +1,7 @@
-import {renderTemplate} from './utils';
-import {createMenuTemplate as menu} from './view/site-menu';
+import {renderTemplate, renderElement, RenderPosition} from './utils';
+import SiteMenu from './view/site-menu';
 import {createFilterTemplate as filter} from './view/filter';
 import {createCardsSortTemplate as sort} from './view/tasks-sort';
-// import {createTaskFormTemplate as form} from './view/task-edit';
-// import {createTaskCardTemplate as task} from './view/task';
 import {createLoadButtonTemplate as loadMoreBtn} from './view/load-more-btn';
 import {createTaskFormTemplate} from "./view/task-edit";
 import {generateTask, createTaskTemplate} from "./mock/task";
@@ -25,7 +23,7 @@ const addTasks = (container, position) => {
   }
 };
 
-renderTemplate(control, menu(), `beforeend`);
+renderElement(control, new SiteMenu().getElement(), RenderPosition.BEFOREEND);
 renderTemplate(control, filter(filters), `afterend`);
 renderTemplate(boardContainer, sort(), `afterbegin`);
 renderTemplate(taskListContainer, createTaskFormTemplate(tasks[0]), `afterbegin`);

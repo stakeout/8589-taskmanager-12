@@ -1,4 +1,6 @@
-export const createMenuTemplate = () => {
+import {createElement} from "../utils.js";
+
+const createSiteMenuTemplate = () => {
   return (`
     <section class="control__btn-wrap">
       <input
@@ -30,3 +32,25 @@ export const createMenuTemplate = () => {
     </section>
  `);
 };
+
+export default class SiteMenu {
+  constructor() {
+    this._element = null;
+  }
+
+  _getTemplate() {
+    return createSiteMenuTemplate();
+  }
+
+  getElement() {
+    if (this._element !== null) {
+      this._element = createElement(this._getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
