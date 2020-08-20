@@ -2,7 +2,7 @@ import {renderTemplate, renderElement, RenderPosition} from './utils.js';
 import SiteMenu from './view/site-menu.js';
 import LoadMoreButtonView from './view/load-more-btn.js';
 import {createFilterTemplate as filter} from './view/filter.js';
-import {createCardsSortTemplate as sort} from './view/tasks-sort.js';
+import SortView from './view/tasks-sort.js';
 import {createTaskFormTemplate} from "./view/task-edit.js";
 import {generateTask, createTaskTemplate} from "./mock/task.js";
 import {generateFilter} from "./mock/filter.js";
@@ -25,7 +25,7 @@ const addTasks = (container, position) => {
 
 renderElement(control, new SiteMenu().getElement(), RenderPosition.BEFOREEND);
 renderTemplate(control, filter(filters), `afterend`);
-renderTemplate(boardContainer, sort(), `afterbegin`);
+renderElement(boardContainer, new SortView().getElement(), RenderPosition.AFTERBEGIN);
 renderTemplate(taskListContainer, createTaskFormTemplate(tasks[0]), `afterbegin`);
 addTasks(taskListContainer, `beforeend`);
 
