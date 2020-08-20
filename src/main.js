@@ -4,6 +4,7 @@ import FilterView from './view/filter.js';
 import SortView from './view/tasks-sort.js';
 import BoardView from './view/board.js';
 import TaskListView from './view/task-list.js';
+import TaskView from './view/task.js';
 import LoadMoreButtonView from './view/load-more-btn.js';
 import {createTaskFormTemplate} from "./view/task-edit.js";
 import {generateTask, createTaskTemplate} from "./mock/task.js";
@@ -20,7 +21,7 @@ const filters = generateFilter(tasks);
 
 const addTasks = (container, position) => {
   for (let i = 1; i <= Math.min(tasks.length, TASK_COUNT_PER_STEP); i += 1) {
-    renderTemplate(container, createTaskTemplate(tasks[i]), position);
+    renderElement(container, new TaskView(tasks[i]).getElement(), position);
   }
 };
 
@@ -46,7 +47,7 @@ if (tasks.length > TASK_COUNT_PER_STEP) {
     evt.preventDefault();
     tasks
     .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
-    .forEach((task) => renderTemplate(taskListComponent.getElement(), createTaskTemplate(task), RenderPosition.BEFOREEND));
+    .forEach((task) => renderElement(taskListComponent.getElement(), new TaskView(task).getElement(), RenderPosition.BEFOREEND));
 
     renderedTaskCount += TASK_COUNT_PER_STEP;
 
