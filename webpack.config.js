@@ -13,7 +13,7 @@ module.exports = {
   devtool: isDev ? 'source-map' : false,
   devServer: {
     contentBase: path.join(__dirname, 'public'),
-    port: 3001,
+    port: 3000,
     hot: isDev,
   },
   plugins: [

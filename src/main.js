@@ -1,10 +1,10 @@
-import {renderTemplate, renderElement, RenderPosition} from './utils';
-import SiteMenu from './view/site-menu';
-import {createFilterTemplate as filter} from './view/filter';
-import {createCardsSortTemplate as sort} from './view/tasks-sort';
-import {createLoadButtonTemplate as loadMoreBtn} from './view/load-more-btn';
-import {createTaskFormTemplate} from "./view/task-edit";
-import {generateTask, createTaskTemplate} from "./mock/task";
+import {renderTemplate, renderElement, RenderPosition} from './utils.js';
+import SiteMenu from './view/site-menu.js';
+import LoadMoreButtonView from './view/load-more-btn.js';
+import {createFilterTemplate as filter} from './view/filter.js';
+import {createCardsSortTemplate as sort} from './view/tasks-sort.js';
+import {createTaskFormTemplate} from "./view/task-edit.js";
+import {generateTask, createTaskTemplate} from "./mock/task.js";
 import {generateFilter} from "./mock/filter.js";
 
 const TASK_AMOUNT = 20;
@@ -29,13 +29,16 @@ renderTemplate(boardContainer, sort(), `afterbegin`);
 renderTemplate(taskListContainer, createTaskFormTemplate(tasks[0]), `afterbegin`);
 addTasks(taskListContainer, `beforeend`);
 
+
 if (tasks.length > TASK_COUNT_PER_STEP) {
+
   let renderedTaskCount = TASK_COUNT_PER_STEP;
-  renderTemplate(boardContainer, loadMoreBtn(), `beforeend`);
 
-  const loadMoreButton = boardContainer.querySelector(`.load-more`);
+  const loadMoreButtonComponent = new LoadMoreButtonView();
 
-  loadMoreButton.addEventListener(`click`, (evt) => {
+  renderElement(boardContainer, loadMoreButtonComponent.getElement(), RenderPosition.BEFOREEND);
+
+  loadMoreButtonComponent.getElement().addEventListener(`click`, (evt) => {
     evt.preventDefault();
     tasks
     .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
@@ -44,7 +47,8 @@ if (tasks.length > TASK_COUNT_PER_STEP) {
     renderedTaskCount += TASK_COUNT_PER_STEP;
 
     if (renderedTaskCount >= tasks.length) {
-      loadMoreButton.remove();
+      loadMoreButtonComponent.getElement().remove();
+      loadMoreButtonComponent.removeElement();
     }
   });
 }
