@@ -1,4 +1,4 @@
-import {renderHtmlElement} from './utils';
+import {renderTemplate} from './utils';
 import {createMenuTemplate as menu} from './view/site-menu';
 import {createFilterTemplate as filter} from './view/filter';
 import {createCardsSortTemplate as sort} from './view/tasks-sort';
@@ -18,23 +18,22 @@ const taskListContainer = boardContainer.querySelector(`.board__tasks`);
 
 const tasks = new Array(TASK_AMOUNT).fill().map(generateTask);
 const filters = generateFilter(tasks);
-console.log(filters);
 
 const addTasks = (container, position) => {
   for (let i = 1; i <= Math.min(tasks.length, TASK_COUNT_PER_STEP); i += 1) {
-    renderHtmlElement(container, createTaskTemplate(tasks[i]), position);
+    renderTemplate(container, createTaskTemplate(tasks[i]), position);
   }
 };
 
-renderHtmlElement(control, menu(), `beforeend`);
-renderHtmlElement(control, filter(filters), `afterend`);
-renderHtmlElement(boardContainer, sort(), `afterbegin`);
-renderHtmlElement(taskListContainer, createTaskFormTemplate(tasks[0]), `afterbegin`);
+renderTemplate(control, menu(), `beforeend`);
+renderTemplate(control, filter(filters), `afterend`);
+renderTemplate(boardContainer, sort(), `afterbegin`);
+renderTemplate(taskListContainer, createTaskFormTemplate(tasks[0]), `afterbegin`);
 addTasks(taskListContainer, `beforeend`);
 
 if (tasks.length > TASK_COUNT_PER_STEP) {
   let renderedTaskCount = TASK_COUNT_PER_STEP;
-  renderHtmlElement(boardContainer, loadMoreBtn(), `beforeend`);
+  renderTemplate(boardContainer, loadMoreBtn(), `beforeend`);
 
   const loadMoreButton = boardContainer.querySelector(`.load-more`);
 
@@ -42,7 +41,7 @@ if (tasks.length > TASK_COUNT_PER_STEP) {
     evt.preventDefault();
     tasks
     .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
-    .forEach((task) => renderHtmlElement(taskListContainer, createTaskTemplate(task), `beforeend`));
+    .forEach((task) => renderTemplate(taskListContainer, createTaskTemplate(task), `beforeend`));
 
     renderedTaskCount += TASK_COUNT_PER_STEP;
 
