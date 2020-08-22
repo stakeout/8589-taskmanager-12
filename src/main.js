@@ -5,6 +5,7 @@ import SortView from './view/tasks-sort.js';
 import BoardView from './view/board.js';
 import TaskListView from './view/task-list.js';
 import TaskView from './view/task.js';
+import NoTaskView from './view/no-task.js';
 import LoadMoreButtonView from './view/load-more-btn.js';
 import TaskEditView from "./view/task-edit.js";
 import {generateTask} from "./mock/task.js";
@@ -13,8 +14,8 @@ import {generateFilter} from "./mock/filter.js";
 const TASK_AMOUNT = 20;
 const TASK_COUNT_PER_STEP = 8;
 
-const boardComponent = new BoardView();
-const taskListComponent = new TaskListView();
+const tasks = new Array(TASK_AMOUNT).fill().map(generateTask);
+const filters = generateFilter(tasks);
 
 const siteMainElement = document.querySelector(`.main`);
 const control = siteMainElement.querySelector(`.control`);
@@ -53,43 +54,48 @@ const renderTask = (taskListElement, task) => {
   render(taskListElement, taskComponent.getElement(), RenderPosition.BEFOREEND);
 };
 
+const renderBoard = (boardContainer, boardTasks) => {
+  const boardComponent = new BoardView();
+  const taskListComponent = new TaskListView();
 
-const tasks = new Array(TASK_AMOUNT).fill().map(generateTask);
-const filters = generateFilter(tasks);
+  render(boardContainer, boardComponent.getElement(), RenderPosition.BEFOREEND);
+  render(boardComponent.getElement(), taskListComponent.getElement(), RenderPosition.BEFOREEND);
 
-const addTasks = (container) => {
-  for (let i = 0; i <= Math.min(tasks.length, TASK_COUNT_PER_STEP); i += 1) {
-    renderTask(container, tasks[i]);
+  if (boardTasks.every((task) => task.isArchive)) {
+    render(boardComponent.getElement(), new NoTaskView().getElement(), RenderPosition.AFTERBEGIN);
+    return;
+  }
+
+  render(boardComponent.getElement(), new SortView().getElement(), RenderPosition.AFTERBEGIN);
+
+  boardTasks
+    .slice(0, Math.min(tasks.length, TASK_COUNT_PER_STEP))
+    .forEach((boardTask) => renderTask(taskListComponent.getElement(), boardTask));
+
+  if (boardTasks.length > TASK_COUNT_PER_STEP) {
+    let renderedTaskCount = TASK_COUNT_PER_STEP;
+
+    const loadMoreButtonComponent = new LoadMoreButtonView();
+
+    render(boardComponent.getElement(), loadMoreButtonComponent.getElement(), RenderPosition.BEFOREEND);
+
+    loadMoreButtonComponent.getElement().addEventListener(`click`, (evt) => {
+      evt.preventDefault();
+      boardTasks
+        .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
+        .forEach((boardTask) => renderTask(taskListComponent.getElement(), boardTask));
+
+      renderedTaskCount += TASK_COUNT_PER_STEP;
+
+      if (renderedTaskCount >= boardTasks.length) {
+        loadMoreButtonComponent.getElement().remove();
+        loadMoreButtonComponent.removeElement();
+      }
+    });
   }
 };
 
 render(control, new SiteMenuView().getElement(), RenderPosition.BEFOREEND);
 render(siteMainElement, new FilterView(filters).getElement(), RenderPosition.BEFOREEND);
-render(siteMainElement, boardComponent.getElement(), RenderPosition.BEFOREEND);
-render(boardComponent.getElement(), new SortView().getElement(), RenderPosition.BEFOREEND);
-render(boardComponent.getElement(), taskListComponent.getElement(), RenderPosition.BEFOREEND);
-addTasks(taskListComponent.getElement(), RenderPosition.BEFOREEND);
 
-
-if (tasks.length > TASK_COUNT_PER_STEP) {
-
-  let renderedTaskCount = TASK_COUNT_PER_STEP;
-
-  const loadMoreButtonComponent = new LoadMoreButtonView();
-
-  render(boardComponent.getElement(), loadMoreButtonComponent.getElement(), RenderPosition.BEFOREEND);
-
-  loadMoreButtonComponent.getElement().addEventListener(`click`, (evt) => {
-    evt.preventDefault();
-    tasks
-    .slice(renderedTaskCount, renderedTaskCount + TASK_COUNT_PER_STEP)
-    .forEach((task) => renderTask(taskListComponent.getElement(), task));
-
-    renderedTaskCount += TASK_COUNT_PER_STEP;
-
-    if (renderedTaskCount >= tasks.length) {
-      loadMoreButtonComponent.getElement().remove();
-      loadMoreButtonComponent.removeElement();
-    }
-  });
-}
+renderBoard(siteMainElement, tasks);
