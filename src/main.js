@@ -1,4 +1,4 @@
-import {render, RenderPosition} from './utils.js';
+import {render, RenderPosition} from './utils/render.js';
 import SiteMenuView from './view/site-menu.js';
 import FilterView from './view/filter.js';
 import SortView from './view/tasks-sort.js';
